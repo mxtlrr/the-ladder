@@ -53,7 +53,6 @@ int main(void){
 			 !(IsKeyDown(KEY_LEFT_SHIFT))){
 			if(notplaying == 0){
 				PlaySound(run2);
-				TraceLog(LOG_INFO, "Sound 1 is playing");
 				notplaying = 1;
 			}
 			if(framect % 25 == 0) notplaying = 0;
@@ -66,7 +65,6 @@ int main(void){
 			// play sound 2
 			if(notplaying == 0){
 				PlaySound(run1);
-				TraceLog(LOG_INFO, "Sound 2(!!) is playing");
 				notplaying = 1;
 			}
 			if(framect % 25 == 0) notplaying = 0;
