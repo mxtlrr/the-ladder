@@ -1,6 +1,11 @@
 #include <raylib.h>
 #include <rcamera.h>
 
+#include <stdio.h>
+
+#define MAX_STAMINA  150
+#define FRAMES_TO_WAIT 3
+
 //------------------------------------------------------------------------------------
 // Program main entry point
 //------------------------------------------------------------------------------------
@@ -20,7 +25,10 @@ int main(void){
 	camera.fovy = 60.0f;                                // Camera field-of-view Y
 	camera.projection = CAMERA_PERSPECTIVE;             // Camera projection type
 
-	int cameraMode = CAMERA_FIRST_PERSON;
+	int stamina = 150; // MAX_STAMINA
+	float speed_modifier = 0.1f;
+
+	int framect = 0;
 
 
 	DisableCursor();                    // Limit cursor to relative movement inside the window
@@ -37,13 +45,21 @@ int main(void){
 		// Camera PRO usage example (EXPERIMENTAL)
 		// This new camera function allows custom movement/rotation values to be directly provided
 		// as input parameters, with this approach, rcamera module is internally independent of raylib inputs
+		if(IsKeyDown(KEY_LEFT_SHIFT)){
+			if(stamina != 0 || stamina > 0) stamina--;
+			speed_modifier = 0.2f;
+		} else {
+			if(framect % 3 == 0)
+				if(stamina != 150 || !(stamina >= 150)) stamina++;
+			speed_modifier = 0.1f;
+		}
 		UpdateCameraPro(&camera,
 			(Vector3){
-				(IsKeyDown(KEY_W) || IsKeyDown(KEY_UP))*0.1f -      // Move forward-backward
-				(IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN))*0.1f,    
-				(IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT))*0.1f -   // Move right-left
-				(IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT))*0.1f,
-				0.0f                                                // Move up-down
+				(IsKeyDown(KEY_W) || IsKeyDown(KEY_UP))*speed_modifier -      // Move forward-backward
+				(IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN))*speed_modifier,    
+				(IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT))*speed_modifier -   // Move right-left
+				(IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT))*speed_modifier,
+				0.0f // up down
 			},
 			(Vector3){
 				GetMouseDelta().x*0.05f,                            // Rotation: yaw
@@ -52,6 +68,7 @@ int main(void){
 			},
 			GetMouseWheelMove()*2.0f);                              // Move to target (zoom)
 
+			
 
 		//----------------------------------------------------------------------------------
 
@@ -65,9 +82,11 @@ int main(void){
 			BeginMode3D(camera);
 
 					DrawPlane((Vector3){ 0.0f, 0.0f, 0.0f }, (Vector2){ 32.0f, 32.0f }, LIGHTGRAY); // Draw ground
+					
 					DrawCube((Vector3){ -16.0f, 2.5f, 0.0f }, 1.0f, 5.0f, 32.0f, BLUE);     // Draw a blue wall
 					DrawCube((Vector3){ 16.0f, 2.5f, 0.0f }, 1.0f, 5.0f, 32.0f, LIME);      // Draw a green wall
 					DrawCube((Vector3){ 0.0f, 2.5f, 16.0f }, 32.0f, 5.0f, 1.0f, GOLD);      // Draw a yellow wall
+					DrawCube((Vector3){ 0.0f, 2.5f, -16.0f }, 32.0f, 5.0f, 1.0f, GOLD);      // Draw a yellow wall
 
 			EndMode3D();
 
@@ -85,8 +104,15 @@ int main(void){
 			// draw pointer
 			DrawCircle(screenWidth/2, screenHeight/2,
 								 4, WHITE);
+
+
+			// stamina bar
+			DrawRectangle(10, 10, stamina, 25, WHITE);
+			DrawRectangleLines(10, 10, 150, 25, BLACK);
 		EndDrawing();
 		//----------------------------------------------------------------------------------
+	
+		framect++;
 	}
 
 	// De-Initialization
