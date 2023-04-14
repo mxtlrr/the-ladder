@@ -15,6 +15,11 @@ int main(void){
 	const int screenWidth = 800;
 	const int screenHeight = 450;
 
+	InitAudioDevice();
+	Sound run1 = LoadSound("src/res/Run1.ogg");
+	Sound run2 = LoadSound("src/res/Run2.ogg");
+	
+
 	InitWindow(screenWidth, screenHeight, "The Ladder");
 
 	// Define the camera to look into our 3d world (position, target, up vector)
@@ -29,6 +34,7 @@ int main(void){
 	float speed_modifier = 0.1f;
 
 	int framect = 0;
+	int notplaying = 0; // sound
 
 
 	DisableCursor();                    // Limit cursor to relative movement inside the window
@@ -42,10 +48,28 @@ int main(void){
 		// Update
 		//----------------------------------------------------------------------------------
 
-		// Camera PRO usage example (EXPERIMENTAL)
-		// This new camera function allows custom movement/rotation values to be directly provided
-		// as input parameters, with this approach, rcamera module is internally independent of raylib inputs
+		if((IsKeyDown(KEY_W) || IsKeyDown(KEY_S)
+		   || IsKeyDown(KEY_D) || IsKeyDown(KEY_A)) &&
+			 !(IsKeyDown(KEY_LEFT_SHIFT))){
+			if(notplaying == 0){
+				PlaySound(run2);
+				TraceLog(LOG_INFO, "Sound 1 is playing");
+				notplaying = 1;
+			}
+			if(framect % 25 == 0) notplaying = 0;
+		}
+		
 		if(IsKeyDown(KEY_LEFT_SHIFT)){
+			// play sound 2
+			if(notplaying == 0){
+				PlaySound(run1);
+				TraceLog(LOG_INFO, "Sound 2(!!) is playing");
+				notplaying = 1;
+			}
+			if(framect % 25 == 0) notplaying = 0;
+
+
+			// stamina and stuff
 			if(stamina != 0 || stamina > 0) stamina--;
 			speed_modifier = 0.2f;
 		} else {
@@ -55,10 +79,10 @@ int main(void){
 		}
 		UpdateCameraPro(&camera,
 			(Vector3){
-				(IsKeyDown(KEY_W) || IsKeyDown(KEY_UP))*speed_modifier -      // Move forward-backward
-				(IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN))*speed_modifier,    
-				(IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT))*speed_modifier -   // Move right-left
-				(IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT))*speed_modifier,
+				(IsKeyDown(KEY_W))*speed_modifier -      // Move forward-backward
+				(IsKeyDown(KEY_S))*speed_modifier,    
+				(IsKeyDown(KEY_D))*speed_modifier -   // Move right-left
+				(IsKeyDown(KEY_A))*speed_modifier,
 				0.0f // up down
 			},
 			(Vector3){
