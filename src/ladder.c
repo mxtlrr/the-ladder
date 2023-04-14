@@ -3,6 +3,9 @@
 
 #include <stdio.h>
 
+/* The Ladder's other code */
+#include "sound.h"
+
 #define MAX_STAMINA  150
 #define FRAMES_TO_WAIT 3
 
@@ -43,31 +46,20 @@ int main(void){
 	//--------------------------------------------------------------------------------------
 
 	// Main game loop
-	while (!WindowShouldClose())        // Detect window close button or ESC key
-	{
+	while (!WindowShouldClose()) {
 		// Update
 		//----------------------------------------------------------------------------------
 
 		if((IsKeyDown(KEY_W) || IsKeyDown(KEY_S)
 		   || IsKeyDown(KEY_D) || IsKeyDown(KEY_A)) &&
-			 !(IsKeyDown(KEY_LEFT_SHIFT))){
-			if(notplaying == 0){
-				PlaySound(run2);
-				notplaying = 1;
-			}
-			if(framect % 25 == 0) notplaying = 0;
-		}
+			 !(IsKeyDown(KEY_LEFT_SHIFT)))
+			notplaying = _playsound(run2, framect, notplaying);
 		
 		if((IsKeyDown(KEY_W) || IsKeyDown(KEY_S)
 		   || IsKeyDown(KEY_D) || IsKeyDown(KEY_A)) &&
 			 (IsKeyDown(KEY_LEFT_SHIFT)) && 
 			 (stamina != 0 || stamina > 0)){
-			// play sound 2
-			if(notplaying == 0){
-				PlaySound(run1);
-				notplaying = 1;
-			}
-			if(framect % 25 == 0) notplaying = 0;
+				notplaying = _playsound(run1, framect, notplaying);
 
 
 			// stamina and stuff
