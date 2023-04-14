@@ -59,7 +59,10 @@ int main(void){
 			if(framect % 25 == 0) notplaying = 0;
 		}
 		
-		if(IsKeyDown(KEY_LEFT_SHIFT)){
+		if((IsKeyDown(KEY_W) || IsKeyDown(KEY_S)
+		   || IsKeyDown(KEY_D) || IsKeyDown(KEY_A)) &&
+			 (IsKeyDown(KEY_LEFT_SHIFT)) && 
+			 (stamina != 0 || stamina > 0)){
 			// play sound 2
 			if(notplaying == 0){
 				PlaySound(run1);
@@ -70,8 +73,10 @@ int main(void){
 
 
 			// stamina and stuff
-			if(stamina != 0 || stamina > 0) stamina--;
-			speed_modifier = 0.2f;
+			if(stamina != 0 || stamina > 0) {
+				stamina--;
+				speed_modifier = 0.2f;
+			}
 		} else {
 			if(framect % 3 == 0)
 				if(stamina != 150 || !(stamina >= 150)) stamina++;
