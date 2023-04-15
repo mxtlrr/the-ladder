@@ -38,7 +38,7 @@ int main(void){
 
 	// Define the camera to look into our 3d world (position, target, up vector)
 	Camera camera = { 0 };
-	camera.position = (Vector3){ 0.6f, 2.0f, -1.3f };    // Camera position
+	camera.position = (Vector3){ -10.6f, 2.0f, -1.3f };    // Camera position
 	camera.target = (Vector3){ -0.2f, 1.9f, 2.6f };      // Camera looking at point
 	camera.up = (Vector3){ 0.0f, 1.0f, 0.0f };          // Camera up vector (rotation towards target)
 	camera.fovy = 60.0f;                                // Camera field-of-view Y
@@ -52,12 +52,13 @@ int main(void){
 
 	stair_t original_stair = {
 		.color = GRAY,
-		.dimensions = (Vector2){0.0f, 0.0f},
+		.dimensions = (Vector2){-10.0f, 0.0f},
 		#ifdef DEBUG
-			.y_pos = 0.0f
+			.y_pos = 0.0f,
 		#else
-			.y_pos = 2.0f
+			.y_pos = 2.0f,
 		#endif
+		.width = WIDTH_STAIR
 	};
 
 
@@ -99,7 +100,7 @@ int main(void){
 				(IsKeyDown(KEY_S))*speed_modifier,    
 				(IsKeyDown(KEY_D))*speed_modifier -   // Move right-left
 				(IsKeyDown(KEY_A))*speed_modifier,
-				move_down__(camera.position.y, player) // up down
+				move_down__(camera.position.y, player, original_stair) // up down
 			},
 			(Vector3){
 				GetMouseDelta().x*0.05f,                            // Rotation: yaw
@@ -152,6 +153,10 @@ int main(void){
 			// draw pointer
 			DrawCircle(screenWidth/2, screenHeight/2,
 								 4, WHITE);
+
+			
+			DrawSphere((Vector3){camera.position.x, camera.position.y,
+									camera.position.z}, 10, RED);
 
 
 			// stamina bar
