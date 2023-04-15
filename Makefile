@@ -14,9 +14,8 @@ override OFILES := $(shell find ./obj -type f -name '*.o')
 
 ladder:
 	@mkdir -p bin/ obj/
-	$(foreach file, $(CFILES), $(CC) $(CFLAGS) -c $(file) -o obj/$(basename $(notdir $(file))).o;)
-
-	gcc $(OFILES) -o bin/ladder $(LINK) -lgcc
+	@$(foreach file, $(CFILES), $(CC) $(CFLAGS) -c $(file) -o obj/$(basename $(notdir $(file))).o; echo CC $(file);)
+	@gcc $(OFILES) -o bin/ladder $(LINK) -lgcc
 
 clean:
 	rm -rf obj/ bin/
