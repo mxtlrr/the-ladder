@@ -1,4 +1,4 @@
-#include "staircase.h"
+#include "world/staircase.h"
 
 void _drawstaircase_z(stair_t starting_stair, int stair_count){
   Vector3 pos = (Vector3){starting_stair.dimensions.x,

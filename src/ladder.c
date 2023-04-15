@@ -5,7 +5,7 @@
 
 /* The Ladder's other code */
 #include "sound.h"
-#include "staircase.h"
+#include "world/staircase.h"
 
 #define MAX_STAMINA  150
 #define FRAMES_TO_WAIT 3
