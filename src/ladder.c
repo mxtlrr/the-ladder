@@ -8,6 +8,8 @@
 #include "world/staircase.h"
 #include "player/physics.h"
 
+#include "player/player.h"
+
 #define MAX_STAMINA  150
 #define FRAMES_TO_WAIT 3
 
@@ -25,6 +27,8 @@ int main(void){
 		SetTraceLogCallback(_);
 	#endif
 
+	player_t player;
+
 	InitAudioDevice();
 	Sound run1 = LoadSound("src/res/Run1.ogg");
 	Sound run2 = LoadSound("src/res/Run2.ogg");
@@ -34,8 +38,8 @@ int main(void){
 
 	// Define the camera to look into our 3d world (position, target, up vector)
 	Camera camera = { 0 };
-	camera.position = (Vector3){ 0.0f, 2.0f, 4.0f };    // Camera position
-	camera.target = (Vector3){ 0.0f, 2.0f, 0.0f };      // Camera looking at point
+	camera.position = (Vector3){ 0.6f, 2.0f, -1.3f };    // Camera position
+	camera.target = (Vector3){ -0.2f, 1.9f, 2.6f };      // Camera looking at point
 	camera.up = (Vector3){ 0.0f, 1.0f, 0.0f };          // Camera up vector (rotation towards target)
 	camera.fovy = 60.0f;                                // Camera field-of-view Y
 	camera.projection = CAMERA_PERSPECTIVE;             // Camera projection type
@@ -49,7 +53,7 @@ int main(void){
 	stair_t original_stair = {
 		.color = GRAY,
 		.dimensions = (Vector2){0.0f, 0.0f},
-		#ifndef DEBUG
+		#ifdef DEBUG
 			.y_pos = 0.0f
 		#else
 			.y_pos = 2.0f
@@ -95,7 +99,7 @@ int main(void){
 				(IsKeyDown(KEY_S))*speed_modifier,    
 				(IsKeyDown(KEY_D))*speed_modifier -   // Move right-left
 				(IsKeyDown(KEY_A))*speed_modifier,
-				move_down__(camera.position.y, camera) // up down
+				move_down__(camera.position.y, player) // up down
 			},
 			(Vector3){
 				GetMouseDelta().x*0.05f,                            // Rotation: yaw
@@ -104,6 +108,13 @@ int main(void){
 			},
 			GetMouseWheelMove()*2.0f);                              // Move to target (zoom)
 
+		// After we update the camera, let's update the players
+		// position
+		player.position = (Vector3){
+			camera.position.x,
+			camera.position.y,
+			camera.position.z
+		};
 			
 
 		//----------------------------------------------------------------------------------
@@ -117,7 +128,9 @@ int main(void){
 
 			BeginMode3D(camera);
 
-				_drawstaircase_z(original_stair, 2);
+				_drawstaircase_z(original_stair, 50);
+				DrawCube((Vector3){10.0f, 2.0f, 8.0f}, 10.0f, 10.0f,
+								10.0f, RED);
 
 			EndMode3D();
 			

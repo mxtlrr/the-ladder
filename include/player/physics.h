@@ -1,6 +1,7 @@
 #pragma once
 
 #include <raylib.h>
+#include "player/player.h"
 
 // The raylib camera uses these values to move the camera up or down.
 // -1.0f -- down
@@ -10,4 +11,4 @@
 #define NO  0.0f
 
 /* Should the player move down, depending on it's current Y position? */
-float move_down__(float y_pos, Camera3D camera);
+float move_down__(float y_pos, player_t player);

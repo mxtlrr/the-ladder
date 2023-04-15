@@ -17,15 +17,16 @@ void _drawstaircase_z(stair_t starting_stair, int stair_count){
                           starting_stair.dimensions.y /* see staircase.h */ };
 
   for(int i = 0; i != stair_count+1; i++){
-    DrawPlane((Vector3){pos.x, pos.y, pos.z}, 
-          (Vector2){10.0f, 1.0f},           /* do not change */
-          starting_stair.color);
+    DrawCube((Vector3){pos.x, pos.y, pos.z}, WIDTH_STAIR,
+             0.1f, LENGTH_STAIR, starting_stair.color);
+
 
     // before we update, lets add to the array
     stair_t cur_stair = {
       .color = starting_stair.color,
       .dimensions = (Vector2){pos.x, pos.z},
-      .y_pos = pos.y
+      .y_pos = pos.y,
+      .width = WIDTH_STAIR
     };
     stairs_z[stairs_z_index] = cur_stair;
 

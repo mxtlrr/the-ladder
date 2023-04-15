@@ -2,8 +2,12 @@
 
 #include <raylib.h>
 
+#define WIDTH_STAIR 10.0f
+#define LENGTH_STAIR 1.0f
+
 typedef struct {
   float y_pos;
+  float width;
   Vector2 dimensions; /* dimensions.x -> Width
                        * dimensions.y -> Length */
   Color color;
