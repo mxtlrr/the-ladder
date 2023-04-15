@@ -10,14 +10,17 @@
 #define MAX_STAMINA  150
 #define FRAMES_TO_WAIT 3
 
-//------------------------------------------------------------------------------------
-// Program main entry point
-//------------------------------------------------------------------------------------
+void _(){}
+
 int main(void){
 	// Initialization
 	//--------------------------------------------------------------------------------------
 	const int screenWidth = 800;
 	const int screenHeight = 450;
+
+	#ifndef DEBUG
+		SetTraceLogCallback(_);
+	#endif
 
 	InitAudioDevice();
 	Sound run1 = LoadSound("src/res/Run1.ogg");
@@ -39,6 +42,12 @@ int main(void){
 
 	int framect = 0;
 	int notplaying = 0; // sound
+
+	stair_t original_stair = {
+		.color = GRAY,
+		.dimensions = (Vector2){0.0f, 0.0f},
+		.y_pos = 0.0f
+	};
 
 
 	DisableCursor();                    // Limit cursor to relative movement inside the window
@@ -101,26 +110,25 @@ int main(void){
 
 			BeginMode3D(camera);
 
-				DrawPlane((Vector3){0.0f, 0.0f, 0.0f},
-									(Vector2){10.0f, 1.0f},
-									GRAY);
-				DrawPlane((Vector3){0.0f, -1.0f, 1.5f},
-									(Vector2){10.0f, 1.0f},
-									GRAY);
-									
+				_drawstaircase_z(original_stair, 3);
+				_drawstaircase_x(original_stair, 4);
 
 			EndMode3D();
+			
+			// Debug info
+			#ifdef DEBUG
 
-			DrawRectangle(560, 5, 220, 50, Fade(SKYBLUE, 1.0f));
-			DrawRectangleLines(560, 5, 220, 50, BLUE);
+				DrawRectangle(560, 5, 220, 50, Fade(SKYBLUE, 1.0f));
+				DrawRectangleLines(560, 5, 220, 50, BLUE);
 
-			DrawText(TextFormat("Coordinates (x,y,z) -> (%.1f, %.1f, %.1f)",
-													camera.position.x, camera.position.y, camera.position.z),
-													570, 15, 10, BLACK);
-			DrawText(TextFormat("Looking at (x,y,z) -> (%.1f, %.1f, %.1f)",
-												  camera.target.x, camera.target.y, camera.target.z),
-													570, 30, 10, BLACK);
+				DrawText(TextFormat("Coordinates (x,y,z) -> (%.1f, %.1f, %.1f)",
+														camera.position.x, camera.position.y, camera.position.z),
+														570, 15, 10, BLACK);
+				DrawText(TextFormat("Looking at (x,y,z) -> (%.1f, %.1f, %.1f)",
+														camera.target.x, camera.target.y, camera.target.z),
+														570, 30, 10, BLACK);
 
+			#endif
 
 			// draw pointer
 			DrawCircle(screenWidth/2, screenHeight/2,
