@@ -21,3 +21,10 @@ void _drawstaircase_z(stair_t starting_stair, int stair_count);
 //
 // NOTE: name is a misnomer
 void _drawstaircase_x(stair_t starting_stair, int stair_count);
+
+// The function describes exactly what the function does
+stair_t* get_stairs_z();
+stair_t* get_stairs_x();
+
+extern int stairs_z_index;
+extern int stairs_x_index;

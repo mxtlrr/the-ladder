@@ -1,4 +1,15 @@
 #include "world/staircase.h"
+#include <stdio.h>
+
+// SOON/TODO: bi.g
+stair_t stairs_z[10];
+stair_t stairs_x[10];
+
+stair_t* get_stairs_x(){ return stairs_x; }
+stair_t* get_stairs_z(){ return stairs_z; }
+
+int stairs_z_index = 0;
+int stairs_x_index = 0;
 
 void _drawstaircase_z(stair_t starting_stair, int stair_count){
   Vector3 pos = (Vector3){starting_stair.dimensions.x,
@@ -9,6 +20,18 @@ void _drawstaircase_z(stair_t starting_stair, int stair_count){
     DrawPlane((Vector3){pos.x, pos.y, pos.z}, 
           (Vector2){10.0f, 1.0f},           /* do not change */
           starting_stair.color);
+
+    // before we update, lets add to the array
+    stair_t cur_stair = {
+      .color = starting_stair.color,
+      .dimensions = (Vector2){pos.x, pos.z},
+      .y_pos = pos.y
+    };
+    stairs_z[stairs_z_index] = cur_stair;
+
+    // this fixes a seg fault lmao
+    if(stairs_z_index > stair_count);
+    else stairs_z_index++;
 
     // update values
     pos.y = pos.y - 1.0f;
@@ -25,6 +48,14 @@ void _drawstaircase_x(stair_t starting_stair, int stair_count){
     DrawPlane((Vector3){pos.x, pos.y, pos.z}, 
           (Vector2){10.0f, 1.0f},
           starting_stair.color);
+
+    stair_t cur_stair = {
+      .color = starting_stair.color,
+      .dimensions = (Vector2){pos.x, pos.z},
+      .y_pos = pos.y
+    };
+    stairs_x[stairs_x_index] = cur_stair;
+    stairs_x_index++;
 
     // update values
     pos.y = pos.y - 1.0f;

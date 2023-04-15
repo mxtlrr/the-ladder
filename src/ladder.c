@@ -6,9 +6,12 @@
 /* The Ladder's other code */
 #include "sound.h"
 #include "world/staircase.h"
+#include "player/physics.h"
 
 #define MAX_STAMINA  150
 #define FRAMES_TO_WAIT 3
+
+#define DEBUG
 
 void _(){}
 
@@ -46,7 +49,11 @@ int main(void){
 	stair_t original_stair = {
 		.color = GRAY,
 		.dimensions = (Vector2){0.0f, 0.0f},
-		.y_pos = 0.0f
+		#ifndef DEBUG
+			.y_pos = 0.0f
+		#else
+			.y_pos = 2.0f
+		#endif
 	};
 
 
@@ -88,7 +95,7 @@ int main(void){
 				(IsKeyDown(KEY_S))*speed_modifier,    
 				(IsKeyDown(KEY_D))*speed_modifier -   // Move right-left
 				(IsKeyDown(KEY_A))*speed_modifier,
-				0.0f // up down
+				move_down__(camera.position.y, camera) // up down
 			},
 			(Vector3){
 				GetMouseDelta().x*0.05f,                            // Rotation: yaw
@@ -110,8 +117,7 @@ int main(void){
 
 			BeginMode3D(camera);
 
-				_drawstaircase_z(original_stair, 3);
-				_drawstaircase_x(original_stair, 4);
+				_drawstaircase_z(original_stair, 2);
 
 			EndMode3D();
 			
