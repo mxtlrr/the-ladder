@@ -9,13 +9,16 @@
  * but oh well */
 
 // X pos
-#define STARTING_AT -8.550537f
-#define ENDING_AT   -11.450045f
+#define STARTING_AT -8.50000f
+#define ENDING_AT   -11.50000f
+
 
 // Z pos
 extern float z_start;
 extern float z_end;
 
+
+#define GAP 1.5f
 typedef struct {
   float y_pos;
   float width;

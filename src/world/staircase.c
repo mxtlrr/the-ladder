@@ -26,8 +26,10 @@ void _drawstaircase_z(stair_t starting_stair, int stair_count){
       .color = starting_stair.color,
       .dimensions = (Vector2){pos.x, pos.z},
       .y_pos = pos.y,
-      .width = WIDTH_STAIR
+      .width = 0.1f /* see below */
     };
+    /* the width value is approximately 0.99984, however
+     * for our purposes, you should just round up*/
     stairs_z[stairs_z_index] = cur_stair;
 
     // this fixes a seg fault lmao
