@@ -2,8 +2,19 @@
 
 #include <raylib.h>
 
-#define WIDTH_STAIR 10.0f
+#define WIDTH_STAIR  3.0f
 #define LENGTH_STAIR 1.0f
+
+/* FIXME: this should probably not be hardcoded
+ * but oh well */
+
+// X pos
+#define STARTING_AT -8.550537f
+#define ENDING_AT   -11.450045f
+
+// Z pos
+extern float z_start;
+extern float z_end;
 
 typedef struct {
   float y_pos;

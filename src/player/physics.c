@@ -8,8 +8,13 @@
  * maybe future me can figure it out.
  
  * it works but not how i want it to */
+
 int done = 0x0000;
-float move_down__(float y_pos, player_t player, stair_t starting){
+float z_start = -0.487900f;
+float z_end   =  0.511940f;
+
+float move_down__(float y_pos, player_t player, stair_t starting,
+                  Camera camera){
   stair_t* stairs = get_stairs_z();
 
   if(y_pos == starting.y_pos+2 && /* required! */
@@ -31,22 +36,18 @@ float move_down__(float y_pos, player_t player, stair_t starting){
     // -> Check if the X position is inside the current stair
     // -> Same for the Z position
     if(y_pos != stairs[j].y_pos){
-      // Check for X position
-      if(player.position.x >= stairs[j].dimensions.x &&
-         player.position.x < (stairs[j].dimensions.x+stairs[j].width)){
-          if(done == 0xfafa){
-            printf("shader 2\n");
-            done = 0x0;
-            return YES;
-            break;
-          }
-          else continue;
-      } else {
-        DrawText(TextFormat("%.6f (z pos=%.6f) >= %.6f && %.6f < %.6f\n(j=%d)?\n", player.position.x,
-              player.position.z, stairs[j].dimensions.x, stairs[j].dimensions.x+stairs[j].width, j),
-              50, 47, 20, WHITE);
-        continue;
+      // printf("%.6f <= %.6f || %.6f >= %.6f\n",
+      //         camera.position.x, starting.dimensions.x+2.0f,
+      //         camera.position.x, (starting.dimensions.x)+starting.width);
+      if(camera.position.x <= STARTING_AT &&
+         camera.position.x >= ENDING_AT){
+        printf("HOLY SHIT YES!\n");
       }
+      DrawText(TextFormat("%.6f (z pos=%.6f)", camera.position.x,
+            camera.position.z),
+            50, 47, 20, WHITE);
+      // printf("%.6f vs %.6f\n", camera.position.x, player.position.x);
+      continue;
     } else continue;
   }
 

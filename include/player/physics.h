@@ -13,4 +13,5 @@
 #define NO  0.0f
 
 /* Should the player move down, depending on it's current Y position? */
-float move_down__(float y_pos, player_t player, stair_t starting);
+float move_down__(float y_pos, player_t player, stair_t starting,
+                  Camera camera);

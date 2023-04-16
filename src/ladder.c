@@ -100,7 +100,8 @@ int main(void){
 				(IsKeyDown(KEY_S))*speed_modifier,    
 				(IsKeyDown(KEY_D))*speed_modifier -   // Move right-left
 				(IsKeyDown(KEY_A))*speed_modifier,
-				move_down__(camera.position.y, player, original_stair) // up down
+				move_down__(camera.position.y, player, original_stair,
+										camera) // up down
 			},
 			(Vector3){
 				GetMouseDelta().x*0.05f,                            // Rotation: yaw
